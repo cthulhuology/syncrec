@@ -1,0 +1,27 @@
+{
+  "name": "syncrec",
+  "version": "1.0.0",
+  "description": "Synchronously call a function iterating over a list of arguments recursively ",
+  "main": "syncrec.js",
+  "scripts": {
+    "test": "node -e 'require(\"./syncrec.js\").test()'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cthulhuology/syncrec.git"
+  },
+  "keywords": [
+    "await",
+    "async",
+    "recursive"
+  ],
+  "author": "Dave Goehrig",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/cthulhuology/syncrec/issues"
+  },
+  "homepage": "https://github.com/cthulhuology/syncrec#readme",
+  "devDependencies": {
+    "deep-equal": "^1.0.1"
+  }
+}

@@ -1,0 +1,45 @@
+syncrec
+-------
+
+This module is a utility module for calling your typical callback oriented code 
+in a synchronous fashion.  There are two functions:
+
+* sync - calls a method with context and arguments returning the value
+* syncrec - calls a method with context repeatedly for each of the args arrays
+
+How to use it:
+--------------
+
+So let's say you are trying to setup a bunch of sqlite3 database tables:
+
+
+	const { sync, syncrec } =  require('./syncrec.js')
+	const sqlite3 = require('sqlite3')
+	const db = new sqlite3.Database(':memory:');
+
+	(async function() {
+		return await syncrec(db,db.run,
+			['CREATE TABLE users ( user_id TEXT, name TEXT, email TEXT, address TEXT )'],
+			['CREATE TABLE attributes ( attribute_id TEXT, user_id TEXT, name TEXT, value TEXT )'],
+			['CREATE TABLE topics ( topic_id TEXT, user_id TEXT, name TEXT )'],
+			['INSERT INTO users (user_id,name,email,address) VALUES (?,?,?,?)', '1','homer','homer@example.com','742 Evergreen Terr.' ],
+			['INSERT INTO users (user_id,name,email,address) VALUES (?,?,?,?)', '2','marge','marge@example.com','742 Evergreen Terr.' ]
+		)
+	})()
+
+This will also add some users to the table one after another in the order 
+specified.  This ordered list makes it easier to ensure that the elements
+are instantiated in the correct order.
+
+You can also use this to fetch the data:
+
+	setTimeout( async () => {
+		var users = await sync(db,db.all, 'SELECT * FROM users') 
+		console.log(users)
+	}, 1000)
+
+This will return the rows from the table as an array or objects.  This can
+be very handy when you want to perform some sequence of queries, but need
+to chain them in order passing results from one to the next.
+
+
